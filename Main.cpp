@@ -15,9 +15,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <stdio.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <stdio.h>
 
 #define DISPLAY_CONSOLE_WINDOW
 
@@ -25,7 +22,7 @@
 #include "WorkerWEnumerator.h"
 
 // Ling OpenGL
-#pragma comment(lib,"opengl32.lib")
+#pragma comment(lib, "opengl32.lib")
 #pragma comment(lib, "glu32.lib")
 
 // For freopen
@@ -37,6 +34,7 @@ HDC hDC;
 HPALETTE hPalette = 0;
 GLboolean animate = GL_TRUE;
 
+// initialize renderring on OpenGL context
 void initSC() {
 	glEnable(GL_ALPHA_TEST);
 	glEnable(GL_DEPTH_TEST);
@@ -50,6 +48,7 @@ void initSC() {
 	glClearColor(0, 0, 0, 0);
 }
 
+// Callback for resize event for OpenGL
 void resizeSC(int width, int height) {
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_PROJECTION);
@@ -59,6 +58,7 @@ void resizeSC(int width, int height) {
 	glLoadIdentity();
 }
 
+// Callback for rendering a surface
 void renderSC() {
 	/* rotate a triangle around */
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -79,6 +79,7 @@ void renderSC() {
 	SwapBuffers(hDC);			/* nop if singlebuffered */
 }
 
+// Event dispatcher
 LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	static PAINTSTRUCT ps;
 
@@ -126,6 +127,7 @@ LONG WINAPI WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
+// Register OpenGL context for window
 HWND CreateOpenGLWindow(LPWSTR title, int x, int y, int width, int height, BYTE type, DWORD flags) {
 	int         n, pf;
 	HWND        hWnd;
@@ -257,6 +259,7 @@ HWND CreateOpenGLWindow(LPWSTR title, int x, int y, int width, int height, BYTE 
 	return hWnd;
 };
 
+// Entry
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) {
 #ifdef DISPLAY_CONSOLE_WINDOW
 	// Open console window
